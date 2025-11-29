@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aetherwell — Battle of Seven Realms</title>
+  <title>Aetherwell — Battle of Seven Realms (Unit Questions)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,7 +12,6 @@
   </header>
 
   <main class="container">
-    <!-- CONFIG: số người chơi -->
     <section class="config card">
       <h2>1. Chọn số người chơi</h2>
       <label>
@@ -29,7 +28,6 @@
       <button id="autofill" class="primary" onclick="autoFill()">Auto-fill remaining</button>
     </section>
 
-    <!-- CHỌN NỀN VĂN MINH -->
     <section id="selectionArea" class="card">
       <h2>2. Chọn nền văn minh (không trùng)</h2>
       <div id="factionGrid" class="faction-grid"></div>
@@ -39,26 +37,23 @@
       <button id="startBtn" class="primary" onclick="startGame()" disabled>Start Game</button>
     </section>
 
-    <!-- ARENA -->
     <section id="arena" class="card hidden">
       <h2>3. Arena</h2>
       <div id="teamsArea" class="teams-area"></div>
 
       <div class="controls">
         <div>
-          <button onclick="drawCard()" id="drawBtn" class="primary" disabled>Draw Card (Lượt hiện tại)</button>
+          <button onclick="drawCard()" id="drawBtn" class="primary" disabled>Draw Card</button>
         </div>
-
         <div id="cardBox" class="card-ui">No card drawn</div>
       </div>
 
-      <!-- Question panel -->
       <div id="questionPanel" class="card hidden">
         <h3 id="cardTitle">Card title</h3>
         <p id="cardQuestion">Question goes here</p>
         <div class="question-controls">
           <input id="answerInput" type="text" placeholder="Type your answer here..." />
-          <button class="primary" id="submitAnswer" onclick="submitAnswer()">Submit</button>
+          <button class="primary" id="submitAnswerBtn">Submit</button>
           <div class="timer">Time: <span id="timerCount">10</span>s</div>
         </div>
         <p class="hint">Trả lời không phân biệt hoa thường. Nếu hết giờ → tính là sai.</p>
@@ -71,7 +66,7 @@
     </section>
 
     <footer class="card small">
-      <p>Made for Aetherwell demo - project</p>
+      <p>Made for Aetherwell demo — questions from UNIT 5 & UNIT 6. See source file.</p>
     </footer>
   </main>
 

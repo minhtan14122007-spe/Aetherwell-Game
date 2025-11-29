@@ -1,73 +1,73 @@
-// game.js — Aetherwell demo with question mechanic (10s timer)
+// game.js - Aetherwell demo using UNIT5 & UNIT6 questions
+// Source: UNIT 5 & UNIT 6 (uploaded by user). See file citation in chat. :contentReference[oaicite:2]{index=2}
 
-// === FACTIONS ===
-console.log("game.js loaded");
-console.log("FACTIONS count:", typeof FACTIONS);
+// ---------- FACTIONS ----------
 const FACTIONS = [
-  { id: "viking", name: "Viking Kingdom", short: "Viking", img: "images/viking.png" },
-  { id: "dragon", name: "Dragon Temple Knights", short: "Dragon", img: "images/dragon.png" },
-  { id: "samurai", name: "Samurai Clan", short: "Samurai", img: "images/samurai.png" },
-  { id: "spartan", name: "Spartan Feast Legion", short: "Spartan", img: "images/spartan.png" },
-  { id: "amazon", name: "Amazon Forest Tribe", short: "Amazon", img: "images/amazon.png" },
-  { id: "pharaoh", name: "Pharaoh Dynasty", short: "Pharaoh", img: "images/pharaoh.png" },
-  { id: "elf", name: "Elf Light Kingdom", short: "Elf", img: "images/elf.png" }
+  { id: "viking", name: "Viking Kingdom", short: "Viking", img: "images/viking.svg" },
+  { id: "dragon", name: "Dragon Temple Knights", short: "Dragon", img: "images/dragon.svg" },
+  { id: "samurai", name: "Samurai Clan", short: "Samurai", img: "images/samurai.svg" },
+  { id: "spartan", name: "Spartan Feast Legion", short: "Spartan", img: "images/spartan.svg" },
+  { id: "amazon", name: "Amazon Forest Tribe", short: "Amazon", img: "images/amazon.svg" },
+  { id: "pharaoh", name: "Pharaoh Dynasty", short: "Pharaoh", img: "images/pharaoh.svg" },
+  { id: "elf", name: "Elf Light Kingdom", short: "Elf", img: "images/elf.svg" }
 ];
 
-// === CARDS: full 20 cards with question + accepted answers and effects ===
-// answers are lowercase; the check is case-insensitive & trims spaces
+// ---------- CARDS: QUESTIONS FROM UNIT5 & UNIT6 (mapped to 20 cards) ----------
 const CARDS = [
-  { id:1, title:"Shampoo Strike", question:"What personal care product do you use to wash your hair?", answers:["shampoo"], correctEffect:{type:"damage",value:2}, wrongEffect:{type:"shieldLoss",value:1} },
+  // Unit 5 - Personal Care (10)
+  { id:1, title:"Manicure/Pedicure", question:"What do people usually get when they want their nails cleaned and shaped?", answers:["manicure","pedicure"], correctEffect:{type:"grantShield",value:1}, wrongEffect:{type:"noAttackNext",value:1} },
 
-  { id:2, title:"Deodorant Mist", question:"What product helps prevent body odor?", answers:["deodorant"], correctEffect:{type:"grantShield",value:2}, wrongEffect:{type:"slow",value:1} },
+  { id:2, title:"Shampoo Strike", question:"What personal care product do you use to wash your hair?", answers:["shampoo"], correctEffect:{type:"damage",value:2}, wrongEffect:{type:"shieldLoss",value:1} },
 
-  { id:3, title:"Mouthwash Roar", question:"What do people use to keep their breath fresh?", answers:["mouthwash"], correctEffect:{type:"stunTarget",value:1}, wrongEffect:{type:"noAttackNext",value:1} },
+  { id:3, title:"Haircut Slash", question:"Which service do you need if you want someone to wash, cut, and style your hair?", answers:["haircut","a haircut"], correctEffect:{type:"damage",value:3}, wrongEffect:{type:"manaLoss",value:1} },
 
-  { id:4, title:"Sacred Haircut Slash", question:"Which service do you need if you want someone to wash, cut, and style your hair?", answers:["haircut","a haircut"], correctEffect:{type:"damage",value:3}, wrongEffect:{type:"manaLoss",value:1} },
+  { id:4, title:"Deodorant Mist", question:"What product helps prevent body odor?", answers:["deodorant"], correctEffect:{type:"grantShield",value:1}, wrongEffect:{type:"slow",value:1} },
 
-  { id:5, title:"Holy Facial Light", question:"What service do you get if you want your face cleaned at a salon?", answers:["facial"], correctEffect:{type:"heal",value:2}, wrongEffect:{type:"loseTurn",value:1} },
+  { id:5, title:"Mouthwash Roar", question:"What do people use to keep their breath fresh?", answers:["mouthwash"], correctEffect:{type:"stunTarget",value:1}, wrongEffect:{type:"noAttackNext",value:1} },
 
-  { id:6, title:"Lotion Barrier", question:"What product keeps your skin from becoming dry?", answers:["lotion","moisturizer","moisturising lotion","moisturiser"], correctEffect:{type:"grantShield",value:2}, wrongEffect:{type:"disableSkill",value:1} },
+  { id:6, title:"Facial Light", question:"What service do you get if you want your face cleaned and treated at a salon?", answers:["facial"], correctEffect:{type:"heal",value:2}, wrongEffect:{type:"loseTurn",value:1} },
 
-  { id:7, title:"Floss Cut Technique", question:"What item removes food stuck between your teeth?", answers:["dental floss","floss","tooth floss"], correctEffect:{type:"damage",value:2}, wrongEffect:{type:"nextDamagePenalty",value:1} },
+  { id:7, title:"Lotion Barrier", question:"What product do you use to keep your skin from becoming dry?", answers:["lotion","moisturizer","moisturiser"], correctEffect:{type:"grantShield",value:2}, wrongEffect:{type:"disableSkill",value:1} },
 
-  { id:8, title:"Hairspray Slash", question:"What personal care product keeps hair in place?", answers:["hairspray","hair gel","gel","hairgel"], correctEffect:{type:"speed",value:1}, wrongEffect:{type:"speed",value:-1} },
+  { id:8, title:"Massage Recovery", question:"What do you call the service where someone gives you a relaxing body treatment?", answers:["a massage","massage"], correctEffect:{type:"heal",value:3}, wrongEffect:{type:"none",value:0} },
 
-  { id:9, title:"Massage Recovery", question:"What do you call the relaxing body treatment service?", answers:["a massage","massage"], correctEffect:{type:"heal",value:3}, wrongEffect:{type:"none",value:0} },
+  { id:9, title:"Dental Floss", question:"What item do you use to remove food stuck between your teeth?", answers:["dental floss","floss"], correctEffect:{type:"damage",value:2}, wrongEffect:{type:"nextDamagePenalty",value:1} },
 
-  { id:10, title:"Junk Food Curse", question:"What describes food high in sugar and fat?", answers:["junk food"], correctEffect:{type:"applyDebuffOnTarget",debuff:{name:"fatigue",value:1,duration:1}}, wrongEffect:{type:"applyDebuffOnSelf",debuff:{name:"fatigue",value:1,duration:1}} },
+  { id:10, title:"Hairspray Slash", question:"What personal care product helps keep your hair in place?", answers:["hairspray","hair gel","gel"], correctEffect:{type:"speed",value:1}, wrongEffect:{type:"speed",value:-1} },
 
-  { id:11, title:"Fried Oil Burst", question:"What do you call food cooked using a lot of oil?", answers:["fried food","fried"], correctEffect:{type:"burn",value:2,duration:2}, wrongEffect:{type:"burn",value:1,duration:1} },
+  // Unit 6 - Eating Well (10)
+  { id:11, title:"Junk Food Curse", question:"What word describes food that is high in sugar and fat and not healthy?", answers:["junk food","unhealthy food"], correctEffect:{type:"applyDebuffOnTarget",debuff:{name:"fatigue",value:1}}, wrongEffect:{type:"applyDebuffOnSelf",debuff:{name:"fatigue",value:1}} },
 
-  { id:12, title:"Organic Blessing", question:"What is food grown without chemicals?", answers:["organic food","organic"], correctEffect:{type:"heal",value:2}, wrongEffect:{type:"cannotHealNext",value:1} },
+  { id:12, title:"Fried Oil Burst", question:"What do you call food that is cooked using a lot of oil?", answers:["fried food","fried"], correctEffect:{type:"burn",value:2,duration:2}, wrongEffect:{type:"burn",value:1,duration:1} },
 
-  { id:13, title:"Nutritious Shot", question:"What describes food with many vitamins?", answers:["nutritious"], correctEffect:{type:"buffExtraDamage",value:2}, wrongEffect:{type:"none",value:0} },
+  { id:13, title:"Vegan Beam", question:"Which word describes food containing no animal products?", answers:["vegan"], correctEffect:{type:"healAndBuff",heal:1,damage:1}, wrongEffect:{type:"cannotAttackNext",value:1} },
 
-  { id:14, title:"Taste Test Trial", question:"What describes how food tastes (sweet, salty…)?", answers:["flavor","flavour","taste"], correctEffect:{type:"drawExtraCard",value:1}, wrongEffect:{type:"loseTurn",value:1} },
+  { id:14, title:"Organic Blessing", question:"What is the term for food that is fresh and not processed?", answers:["organic","natural","fresh"], correctEffect:{type:"grantShield",value:2}, wrongEffect:{type:"cannotHealNext",value:1} },
 
-  { id:15, title:"Healthy Guard", question:"What adjective describes low-fat good food?", answers:["healthy","low-fat","low fat"], correctEffect:{type:"grantShield",value:2}, wrongEffect:{type:"shieldLoss",value:1} },
+  { id:15, title:"Nutritious Shot", question:"What word describes food with a lot of vitamins and minerals?", answers:["nutritious"], correctEffect:{type:"buffExtraDamage",value:2}, wrongEffect:{type:"none",value:0} },
 
-  { id:16, title:"Vegan Beam", question:"What describes food with no animal products?", answers:["vegan"], correctEffect:{type:"healAndBuff",heal:1,damage:1}, wrongEffect:{type:"cannotAttackNext",value:1} },
+  { id:16, title:"Flavor Test", question:"What word describes the way food tastes (sweet, salty, spicy)?", answers:["flavor","taste","flavour"], correctEffect:{type:"drawExtraCard",value:1}, wrongEffect:{type:"loseTurn",value:1} },
 
-  { id:17, title:"Fast Food Ambush", question:"What is easy but unhealthy food like pizza or hamburgers?", answers:["fast food"], correctEffect:{type:"quickAttack",value:2}, wrongEffect:{type:"slow",value:1} },
+  { id:17, title:"Organic Food", question:"What do you call food grown without chemicals?", answers:["organic food","organic"], correctEffect:{type:"grantShield",value:2}, wrongEffect:{type:"shieldLoss",value:1} },
 
-  { id:18, title:"Vegetarian Blessing", question:"What do you call a person who doesn’t eat meat?", answers:["vegetarian"], correctEffect:{type:"grantAllyHeal",value:3}, wrongEffect:{type:"none",value:0} },
+  { id:18, title:"Healthy Guard", question:"What adjective describes food that is low in fat and good for your body?", answers:["healthy","low-fat","low fat"], correctEffect:{type:"grantAllyHeal",value:2}, wrongEffect:{type:"none",value:0} },
 
-  { id:19, title:"Used-to Knowledge Shot", question:"I _______ eat vegetables, but now I do.", answers:["didn't use to","didn't used to","didnt use to","didnt used to"], correctEffect:{type:"damage",value:3}, wrongEffect:{type:"noDamageNext",value:1} },
+  { id:19, title:"Fast Food Ambush", question:"What do you call easy but unhealthy food like pizza or hamburgers?", answers:["fast food"], correctEffect:{type:"quickAttack",value:2}, wrongEffect:{type:"slow",value:1} },
 
-  { id:20, title:"Spicy Food Memory", question:"Did you use to like spicy food?", answers:["yes","no","did you use to like spicy food?"], correctEffect:{type:"targetLoseTurn",value:1}, wrongEffect:{type:"self",value:-2} }
+  { id:20, title:"Vegetarian Blessing", question:"What is the term for a person who doesn’t eat meat?", answers:["vegetarian"], correctEffect:{type:"grantAllyHeal",value:3}, wrongEffect:{type:"none",value:0} }
 ];
 
-// game state
+// ---------- GAME STATE ----------
 let playerCount = 4;
-let selections = []; // {slot, factionId}
+let selections = [];
 let usedFactions = new Set();
-let teams = []; // {slot, factionId, name, hp, maxHp, shield, status:{stun:0, burn:[], fatigue:0, disabledSkill:0, cannotAttack:0, slow:0, speed:0, extraDmg:0}, dead:false}
-let currentTurnIndex = 0; // index in teams array of who's turn it is
+let teams = [];
+let currentTurnIndex = 0;
 let drawnCard = null;
 let questionTimer = null;
 let timerCount = 10;
 
-// DOM refs
+// ---------- DOM references ----------
 const factionGrid = document.getElementById("factionGrid");
 const pickedList = document.getElementById("pickedList");
 const startBtn = document.getElementById("startBtn");
@@ -81,10 +81,14 @@ const questionPanel = document.getElementById("questionPanel");
 const cardTitle = document.getElementById("cardTitle");
 const cardQuestion = document.getElementById("cardQuestion");
 const answerInput = document.getElementById("answerInput");
+const submitAnswerBtn = document.getElementById("submitAnswerBtn");
 const timerSpan = document.getElementById("timerCount");
 const autoBtn = document.getElementById("autofill");
 
-// --- Selection UI ---
+// wire submit
+submitAnswerBtn.addEventListener('click', handleSubmitAnswer);
+
+// ---------- selection UI ----------
 function setupSelection(){
   playerCount = parseInt(playerCountSel.value || "4");
   selections = [];
@@ -152,7 +156,6 @@ function unpick(factionId){
   renderPickedList();
 }
 
-// auto-fill remaining slots with random unused factions
 function autoFill(){
   const available = FACTIONS.map(f=>f.id).filter(id=>!usedFactions.has(id));
   while(selections.length < playerCount && available.length){
@@ -166,13 +169,12 @@ function autoFill(){
   startBtn.disabled = selections.length < playerCount;
 }
 
-// --- Start game ---
+// ---------- start game ----------
 function startGame(){
   if(selections.length < playerCount){
     alert("Chọn đủ nền văn minh trước khi bắt đầu.");
     return;
   }
-  // create teams
   teams = selections.map(s=>{
     const f = FACTIONS.find(x=>x.id===s.factionId);
     return {
@@ -192,7 +194,6 @@ function startGame(){
   log("Game started. Lượt Player 1 bắt đầu.");
   currentTurnIndex = 0;
   updateActiveTeamUI();
-  // disable selection changes
   startBtn.disabled = true;
   playerCountSel.disabled = true;
   document.querySelectorAll(".faction").forEach(el=>el.onclick = ()=>{});
@@ -200,14 +201,15 @@ function startGame(){
   drawBtn.disabled = false;
 }
 
-// --- Render teams ---
+// ---------- render teams ----------
 function renderTeams(){
   teamsArea.innerHTML = "";
   teams.forEach(team=>{
     const div = document.createElement("div");
     div.className = "team";
     div.id = "team_" + team.factionId;
-    const imgSrc = (FACTIONS.find(f=>f.id===team.factionId).img) || "";
+    const fobj = FACTIONS.find(f=>f.id===team.factionId);
+    const imgSrc = fobj ? fobj.img : "";
     div.innerHTML = `
       <div class="team-head">
         <img src="${imgSrc}" onerror="this.style.display='none'"/>
@@ -241,7 +243,7 @@ function updateStatusUI(team){
   stat.textContent = parts.length? parts.join(' • '): '—';
 }
 
-// --- Logging utility ---
+// ---------- log ----------
 function log(text){
   const row = document.createElement("div");
   row.className = "log-item";
@@ -249,13 +251,11 @@ function log(text){
   logArea.prepend(row);
 }
 
-// --- Turn & draw logic ---
-// Only the active team can draw. drawCard shows question and starts timer.
+// ---------- draw & question ----------
 function drawCard(){
   if(!teams.length) return;
   const team = teams[currentTurnIndex];
   if(team.dead){ advanceTurn(); return; }
-  // check skip states
   if(team.status.skipTurn > 0){
     log(`${team.name} mất lượt (skip).`);
     team.status.skipTurn--;
@@ -268,21 +268,14 @@ function drawCard(){
     advanceTurn();
     return;
   }
-  if(team.status.cannotAttack > 0){
-    // they can still draw a card/question but effect may block attack; we'll allow answer though.
-    log(`${team.name} không thể tấn công lượt này nếu trả lời đúng (effect sẽ bị giới hạn).`);
-  }
 
-  // pick random card
   const idx = Math.floor(Math.random() * CARDS.length);
   drawnCard = CARDS[idx];
   cardBox.innerHTML = `${drawnCard.title} — ${drawnCard.question}`;
-  // show question panel
   showQuestion(drawnCard);
   drawBtn.disabled = true;
 }
 
-// show question UI & start 10s timer
 function showQuestion(card){
   cardTitle.textContent = card.title;
   cardQuestion.textContent = card.question;
@@ -290,9 +283,7 @@ function showQuestion(card){
   timerCount = 10;
   timerSpan.textContent = timerCount;
   questionPanel.classList.remove("hidden");
-  // focus input
   answerInput.focus();
-  // start timer
   if(questionTimer) clearInterval(questionTimer);
   questionTimer = setInterval(()=>{
     timerCount--;
@@ -300,40 +291,32 @@ function showQuestion(card){
     if(timerCount <= 0){
       clearInterval(questionTimer);
       questionTimer = null;
-      // time out => treat as wrong
       log(`Hết giờ! Tính là trả lời sai.`);
-      hideQuestion();
+      hideQuestionPanel();
       processAnswer(false, "");
     }
   }, 1000);
 }
 
-// hide question UI
-function hideQuestion(){
+function hideQuestionPanel(){
   questionPanel.classList.add("hidden");
-  if(questionTimer){
-    clearInterval(questionTimer);
-    questionTimer = null;
-  }
+  if(questionTimer){ clearInterval(questionTimer); questionTimer = null; }
 }
 
-// submit answer by user
-function submitAnswer(){
+// ---------- answer handling ----------
+function handleSubmitAnswer(){
   if(!drawnCard) return;
   const raw = answerInput.value || "";
   const answer = raw.trim().toLowerCase();
-  // stop timer
   if(questionTimer){ clearInterval(questionTimer); questionTimer = null; }
-  hideQuestion();
+  hideQuestionPanel();
   const isCorrect = checkAnswer(drawnCard, answer);
   processAnswer(isCorrect, answer);
 }
 
 function checkAnswer(card, answer){
   if(!answer) return false;
-  // normalize
   const a = answer.replace(/\s+/g,' ').trim().toLowerCase();
-  // accept any accepted answer
   for(const acc of card.answers){
     const norm = acc.toLowerCase().trim();
     if(a === norm) return true;
@@ -341,45 +324,36 @@ function checkAnswer(card, answer){
   return false;
 }
 
-// apply effects depending on correctness
 function processAnswer(isCorrect, answerText){
   const attacker = teams[currentTurnIndex];
-  // pick a target: choose next living team (wrap)
   const targets = teams.filter(t => t !== attacker && t.hp > 0);
-  let target = null;
-  if(targets.length) target = targets[0]; // simple: first alive different team
-  // log
+  const target = targets.length ? targets[0] : null;
   log(`${attacker.name} rút: ${drawnCard.title}. Trả lời: "${answerText}" → ${isCorrect ? "ĐÚNG" : "SAI"}.`);
-  // choose which effect to run
   const effect = isCorrect ? drawnCard.correctEffect : drawnCard.wrongEffect;
   applyEffect(effect, attacker, target, isCorrect);
   drawnCard = null;
-  // update UI
   renderTeams();
-  // after action, tick burn & end turn
   tickEndOfTurn();
   advanceTurn();
 }
 
-// effect handler (many effect types)
+// ---------- effects ----------
 function applyEffect(effect, attacker, target, isCorrect){
   if(!effect) return;
-  // convenience
   const a = attacker;
   const t = target;
   switch(effect.type){
-    case "damage":
+    case "damage": {
       if(!t) { log("No valid target."); break; }
       let dmg = effect.value + (a.status.extraDmg || 0);
-      // fatigue reduces dmg
       if(a.status.fatigue > 0) dmg = Math.max(0, dmg - 1);
-      // shield reduces target damage
       const absorbed = Math.min(t.shield, dmg);
       t.shield -= absorbed;
       const net = dmg - absorbed;
       t.hp = Math.max(0, t.hp - net);
       log(`${a.name} gây ${dmg} dmg lên ${t.name} (shield hấp thụ ${absorbed}).`);
       break;
+    }
 
     case "grantShield":
       a.shield += effect.value;
@@ -387,9 +361,8 @@ function applyEffect(effect, attacker, target, isCorrect){
       break;
 
     case "shieldLoss":
-      // remove shield from attacker (or target if chosen)
       a.shield = Math.max(0, a.shield - effect.value);
-      log(`${a.name} mất ${effect.value} shield vì sai câu.`);
+      log(`${a.name} mất ${effect.value} shield.`);
       break;
 
     case "stunTarget":
@@ -403,11 +376,6 @@ function applyEffect(effect, attacker, target, isCorrect){
       log(`${a.name} sẽ không thể tấn công lượt tiếp theo.`);
       break;
 
-    case "manaLoss":
-      // demo: just log (no mana system in this demo)
-      log(`${a.name} bị -1 mana (mana chưa implement).`);
-      break;
-
     case "heal":
       a.hp = Math.min(a.maxHp, a.hp + effect.value);
       log(`${a.name} hồi ${effect.value} HP.`);
@@ -415,7 +383,7 @@ function applyEffect(effect, attacker, target, isCorrect){
 
     case "disableSkill":
       a.status.disabledSkill = (a.status.disabledSkill||0) + effect.value;
-      log(`${a.name} không dùng kỹ năng đặc biệt trong ${effect.value} lượt.`);
+      log(`${a.name} không dùng kỹ năng đặc biệt ${effect.value} lượt.`);
       break;
 
     case "nextDamagePenalty":
@@ -424,7 +392,6 @@ function applyEffect(effect, attacker, target, isCorrect){
       break;
 
     case "speed":
-      // speed changes not fully used in this demo; store value
       a.status.speed = (a.status.speed||0) + effect.value;
       log(`${a.name} speed thay đổi ${effect.value}.`);
       break;
@@ -437,7 +404,7 @@ function applyEffect(effect, attacker, target, isCorrect){
 
     case "applyDebuffOnSelf":
       a.status[effect.debuff.name] = (a.status[effect.debuff.name] || 0) + effect.debuff.value;
-      log(`${a.name} bị debuff ${effect.debuff.name} (lỡ câu).`);
+      log(`${a.name} bị debuff ${effect.debuff.name}.`);
       break;
 
     case "burn":
@@ -458,17 +425,10 @@ function applyEffect(effect, attacker, target, isCorrect){
       break;
 
     case "drawExtraCard":
-      // simple: immediately draw another card for same attacker (no question for second draw in demo)
-      log(`${a.name} bốc thêm 1 lá bài (demo: auto apply random).`);
-      // perform one immediate random effect without question for demo simplicity
+      log(`${a.name} bốc thêm 1 lá bài (auto).`);
       const idx = Math.floor(Math.random() * CARDS.length);
       const card = CARDS[idx];
-      log(`(Extra draw) ${a.name} rút ${card.title} — sẽ auto kích hoạt đúng.`);
       applyEffect(card.correctEffect, a, target, true);
-      break;
-
-    case "nextDamagePenalty":
-      // handled above
       break;
 
     case "healAndBuff":
@@ -487,7 +447,6 @@ function applyEffect(effect, attacker, target, isCorrect){
       break;
 
     case "grantAllyHeal":
-      // heal all allies except attacker
       teams.forEach(team=>{
         if(team !== a && team.hp > 0){
           team.hp = Math.min(team.maxHp, team.hp + effect.value);
@@ -507,10 +466,9 @@ function applyEffect(effect, attacker, target, isCorrect){
       break;
 
     default:
-      log("Effect type chưa được implement: " + effect.type);
+      log("Effect type chưa được implement: " + (effect.type || JSON.stringify(effect)));
   }
 
-  // clamp hp to >=0 and set dead flag when hp=0
   teams.forEach(ti=>{
     if(ti.hp <= 0 && !ti.dead){
       ti.dead = true;
@@ -521,11 +479,9 @@ function applyEffect(effect, attacker, target, isCorrect){
   });
 }
 
-// tick end of turn: reduce burn, durations, etc.
+// ---------- end of turn tick ----------
 function tickEndOfTurn(){
-  // process burn & reduce durations for all teams
   teams.forEach(team=>{
-    // burn
     if(team.status.burn && team.status.burn.length){
       let totalBurn = 0;
       team.status.burn.forEach(b=>{
@@ -534,32 +490,27 @@ function tickEndOfTurn(){
       });
       team.hp = Math.max(0, team.hp - totalBurn);
       log(`${team.name} chịu ${totalBurn} burn damage.`);
-      // remove expired
       team.status.burn = team.status.burn.filter(b=>b.turns > 0);
     }
-    // reduce simple counters
     if(team.status.fatigue && team.status.fatigue>0) team.status.fatigue = Math.max(0, team.status.fatigue-1);
     if(team.status.disabledSkill && team.status.disabledSkill>0) team.status.disabledSkill--;
     if(team.status.cannotAttack && team.status.cannotAttack>0) team.status.cannotAttack--;
     if(team.status.slow && team.status.slow>0) team.status.slow = Math.max(0, team.status.slow-1);
     if(team.status.noDamageNext && team.status.noDamageNext>0) team.status.noDamageNext--;
-    if(team.status.skipTurn && team.status.skipTurn>0) team.status.skipTurn = Math.max(0, team.status.skipTurn); // will be consumed at start
-    // update UI
+    if(team.status.skipTurn && team.status.skipTurn>0) team.status.skipTurn = Math.max(0, team.status.skipTurn);
     updateTeamUI(team);
     updateStatusUI(team);
   });
 }
 
-// advance to next alive team
+// ---------- advance turn ----------
 function advanceTurn(){
-  // check win condition
   const alive = teams.filter(t=>t.hp>0);
   if(alive.length <= 1){
     log("KẾT THÚC: " + (alive[0] ? alive[0].name + " thắng!" : "Không còn ai sống"));
     drawBtn.disabled = true;
     return;
   }
-  // find next index
   let attempts = 0;
   do {
     currentTurnIndex = (currentTurnIndex + 1) % teams.length;
@@ -571,7 +522,6 @@ function advanceTurn(){
   log(`Lượt hiện tại: ${teams[currentTurnIndex].name}`);
 }
 
-// UI updates
 function updateTeamUI(team){
   const hpEl = document.getElementById("hp_" + team.factionId);
   const shieldEl = document.getElementById("shield_" + team.factionId);
@@ -590,7 +540,7 @@ function updateActiveTeamUI(){
   });
 }
 
-// reset UI if come back to selection
+// ---------- reset ----------
 function resetStateUI(){
   teamsArea.innerHTML = "";
   logArea.innerHTML = "";
@@ -602,5 +552,12 @@ function resetStateUI(){
   autoBtn.disabled = false;
 }
 
-// init
+// ---------- init ----------
 setupSelection();
+
+// ---------- expose globals ----------
+window.setupSelection = setupSelection;
+window.autoFill = autoFill;
+window.startGame = startGame;
+window.drawCard = drawCard;
+window.unpick = unpick;
