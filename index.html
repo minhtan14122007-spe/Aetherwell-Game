@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aetherwell — Battle of Seven Realms</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>AETHERWELL <span class="sub">Battle of Seven Realms</span></h1>
+  </header>
+
+  <main class="container">
+    <!-- CONFIG: số người chơi -->
+    <section class="config card">
+      <h2>1. Chọn số người chơi</h2>
+      <label>
+        <select id="playerCount" onchange="setupSelection()">
+          <option value="2">2 Players</option>
+          <option value="3">3 Players</option>
+          <option value="4" selected>4 Players</option>
+          <option value="5">5 Players</option>
+          <option value="6">6 Players</option>
+          <option value="7">7 Players</option>
+        </select>
+      </label>
+      <p class="hint">Mỗi người chọn 1 nền văn minh — không được trùng.</p>
+      <button id="autofill" class="primary" onclick="autoFill()">Auto-fill remaining</button>
+    </section>
+
+    <!-- CHỌN NỀN VĂN MINH -->
+    <section id="selectionArea" class="card">
+      <h2>2. Chọn nền văn minh (không trùng)</h2>
+      <div id="factionGrid" class="faction-grid"></div>
+
+      <h3>Đã chọn:</h3>
+      <div id="pickedList" class="picked-list"></div>
+      <button id="startBtn" class="primary" onclick="startGame()" disabled>Start Game</button>
+    </section>
+
+    <!-- ARENA -->
+    <section id="arena" class="card hidden">
+      <h2>3. Arena</h2>
+      <div id="teamsArea" class="teams-area"></div>
+
+      <div class="controls">
+        <div>
+          <button onclick="drawCard()" id="drawBtn" class="primary" disabled>Draw Card (Lượt hiện tại)</button>
+        </div>
+
+        <div id="cardBox" class="card-ui">No card drawn</div>
+      </div>
+
+      <!-- Question panel -->
+      <div id="questionPanel" class="card hidden">
+        <h3 id="cardTitle">Card title</h3>
+        <p id="cardQuestion">Question goes here</p>
+        <div class="question-controls">
+          <input id="answerInput" type="text" placeholder="Type your answer here..." />
+          <button class="primary" id="submitAnswer" onclick="submitAnswer()">Submit</button>
+          <div class="timer">Time: <span id="timerCount">10</span>s</div>
+        </div>
+        <p class="hint">Trả lời không phân biệt hoa thường. Nếu hết giờ → tính là sai.</p>
+      </div>
+
+      <div class="log card">
+        <h3>Battle Log</h3>
+        <div id="logArea" class="log-area"></div>
+      </div>
+    </section>
+
+    <footer class="card small">
+      <p>Made for Aetherwell demo - project</p>
+    </footer>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

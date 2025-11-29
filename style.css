@@ -1,0 +1,130 @@
+:root{
+  --bg:#071029;
+  --card:#0f1b2b;
+  --accent:#ffb86b;
+  --muted:#9fb3c8;
+  --good:#6ee7b7;
+  --danger:#ff6b6b;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, "Segoe UI", Roboto, Arial;
+  background: linear-gradient(180deg,var(--bg), #041022 80%);
+  color:#eaf6ff;
+  min-height:100vh;
+}
+
+.topbar{
+  padding:18px 24px;
+  background:linear-gradient(90deg,#051426 60%, rgba(255,255,255,0.02));
+  box-shadow:0 2px 10px rgba(0,0,0,0.6);
+}
+h1{margin:0;font-size:20px;letter-spacing:1px}
+.sub{font-size:12px;color:var(--muted);margin-left:8px}
+
+.container{
+  max-width:1100px;
+  margin:28px auto;
+  padding:0 20px 60px;
+}
+
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:18px;
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 6px 20px rgba(2,8,16,0.6);
+}
+
+.small{font-size:13px;text-align:center}
+
+.config select{
+  padding:8px 12px;border-radius:8px;border:none;background:#0c2233;color:var(--muted);
+}
+
+.faction-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;margin-top:12px;
+}
+
+/* Faction card */
+.faction{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px;border-radius:10px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+  cursor:pointer; transition:transform .12s ease, box-shadow .12s;
+  border:1px solid rgba(255,255,255,0.02);
+}
+.faction:hover{transform:translateY(-4px); box-shadow:0 8px 18px rgba(0,0,0,0.6)}
+.faction.disabled{opacity:0.42;cursor:not-allowed; transform:none}
+.thumb{width:56px;height:56px;border-radius:8px;background:#071429;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)}
+.faction .meta{flex:1}
+.faction .meta h4{margin:0;font-size:15px}
+.faction .meta p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+
+/* picked list */
+.picked-list{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.picked{
+  padding:8px 12px;border-radius:999px;background:#061522;border:1px solid rgba(255,255,255,0.03);
+  display:flex;gap:8px;align-items:center;font-size:13px;
+}
+
+/* start button */
+.primary{
+  background:linear-gradient(90deg,var(--accent), #ff8a3d);
+  border:none;padding:10px 16px;border-radius:10px;color:#041022;font-weight:700;
+  cursor:pointer;margin-top:10px;box-shadow:0 6px 18px rgba(255,150,60,0.12);
+}
+.primary:disabled{opacity:0.5;cursor:not-allowed;box-shadow:none}
+
+/* ARENA */
+.teams-area{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;margin-bottom:16px;
+}
+
+/* team panel */
+.team{
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.12));
+  padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+  position:relative;overflow:hidden;
+}
+.team.active{box-shadow:0 10px 28px rgba(0,120,255,0.12);border:1px solid rgba(60,140,255,0.12)}
+.team-head{display:flex;gap:12px;align-items:center}
+.team-head img{width:56px;height:56px;border-radius:8px;object-fit:cover}
+.team-name{font-weight:700}
+.hpbar{
+  height:12px;background:#071a26;border-radius:999px;margin-top:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.02);
+}
+.hpfill{height:100%;background:linear-gradient(90deg,var(--good), #40e0b0);width:100%;transition:width .6s ease}
+
+/* small stat row */
+.stat-row{display:flex;gap:8px;margin-top:8px;font-size:13px;color:var(--muted)}
+.stat{background:#061526;padding:6px 8px;border-radius:8px}
+
+/* card ui */
+.controls{display:flex;gap:12px;align-items:center;margin-top:12px}
+.card-ui{
+  min-width:240px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#061726,#032029);
+  border:1px solid rgba(255,255,255,0.02);
+}
+
+/* question panel */
+.question-controls{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+#answerInput{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);min-width:260px;background:#03131a;color:#eaf6ff}
+.timer{margin-left:auto;font-weight:700;color:var(--accent)}
+
+/* log */
+.log-area{max-height:220px;overflow:auto;background:#04101a;padding:10px;border-radius:8px;font-size:13px}
+.log-item{padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
+
+/* hidden util */
+.hidden{display:none}
+.hint{font-size:13px;color:var(--muted)}
